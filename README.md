@@ -40,3 +40,11 @@ Choose from a range of AI tools tailored to sustainability and wellness:
 ![App Screenshot](image.png)
 
 ---
+
+## 🚀 Run the App
+
+To run the Streamlit CMS app, use the following command:
+
+```bash
+python -m streamlit run app.py --server.fileWatcherType none --server.port 8501
+```

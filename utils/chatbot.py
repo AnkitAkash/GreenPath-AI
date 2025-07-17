@@ -76,7 +76,7 @@ def analyze_image(uploaded_image):
                 {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}},
             ]},
         ],
-        model="llama-3.2-90b-vision-preview",
+        model="llama-3.3-70b-versatile",
         temperature=0.01,
     )
     
@@ -96,7 +96,7 @@ def get_carbon_emission(question, distance_km, mode):
     ]
 
     response = client.chat.completions.create(
-        model="llama-3.2-90b-vision-preview",
+        model="llama-3.3-70b-versatile",
         messages=messages,
         max_tokens=150  # ✅ Ensure concise response
     )
@@ -146,7 +146,7 @@ def generate_diet_plan(age, weight, goal, diet_preference):
     ]
 
     response = client.chat.completions.create(
-        model="llama-3.2-90b-vision-preview",
+        model="llama-3.3-70b-versatile",
         messages=messages,
         max_tokens=600  # ✅ Keeps response short and effective
     )
@@ -163,7 +163,7 @@ def ask_sustainability_ai(user_question):
     ]
 
     response = client.chat.completions.create(
-        model="llama-3.2-90b-vision-preview",
+        model="llama-3.3-70b-versatile",
         messages=messages,
         max_tokens=150  # ✅ Ensures a brief response
     )
