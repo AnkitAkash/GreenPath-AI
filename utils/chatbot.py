@@ -1,12 +1,16 @@
 import base64
 import groq
 import random
+import os
+
+# Disable TensorFlow to avoid conflicts
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['USE_TF'] = '0'
 
 import requests
 from bs4 import BeautifulSoup
 from transformers import pipeline
 
-import os
 from dotenv import load_dotenv
 
 # Initialize Hugging Face Summarization Model
@@ -55,32 +59,34 @@ def encode_image(uploaded_file):
     return base64.b64encode(uploaded_file.getvalue()).decode('utf-8')
 
 def analyze_image(uploaded_image):
-    """Analyze an uploaded image and generate an ESG rating based on nutritional values."""
-    base64_image = encode_image(uploaded_image)
+    """Generate an ESG sustainability rating for food products. 
+    Note: Currently using text-only analysis as Groq vision models have been decommissioned."""
     
+    # Fallback to text-based analysis since vision models are decommissioned
     prompt = (
-        "Analyze the nutritional values from the uploaded image and provide a short ESG rating. "
-        "Include only 1-2 pros and 1-2 cons about the product’s environmental impact. "
+        "Generate a general ESG sustainability rating for a food product. "
+        "Include 1-2 pros and 1-2 cons about typical environmental impacts of food products. "
         "Keep the response short and to the point.\n\n"
         "Example response:\n"
         "**ESG Rating: 7/10**\n"
-        "**Pros:** Uses organic ingredients, Low carbon footprint.\n"
-        "**Cons:** High water consumption, Plastic packaging.\n\n"
-        "Now analyze the provided image and generate a similar response."
+        "**Pros:** Plant-based ingredients, Minimal processing.\n"
+        "**Cons:** Packaging materials, Transportation footprint.\n\n"
+        "Provide a similar analysis for a typical food product."
     )
     
     chat_completion = client.chat.completions.create(
         messages=[
-            {"role": "user", "content": [
-                {"type": "text", "text": prompt},
-                {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}},
-            ]},
+            {"role": "user", "content": prompt}
         ],
-        model="llama-3.2-90b-vision-preview",
-        temperature=0.01,
+        model="llama-3.3-70b-versatile",
+        temperature=0.3,
     )
     
-    return chat_completion.choices[0].message.content.strip()
+    # Add a note about vision capability limitation
+    result = chat_completion.choices[0].message.content.strip()
+    result += "\n\n*Note: Image analysis currently unavailable due to vision model limitations. This is a general sustainability assessment.*"
+    
+    return result
 
 def get_carbon_emission(question, distance_km, mode):
     """Get a short and to-the-point carbon emission analysis."""
@@ -96,7 +102,7 @@ def get_carbon_emission(question, distance_km, mode):
     ]
 
     response = client.chat.completions.create(
-        model="llama-3.2-90b-vision-preview",
+        model="llama-3.3-70b-versatile",
         messages=messages,
         max_tokens=150  # ✅ Ensure concise response
     )
@@ -146,7 +152,7 @@ def generate_diet_plan(age, weight, goal, diet_preference):
     ]
 
     response = client.chat.completions.create(
-        model="llama-3.2-90b-vision-preview",
+        model="llama-3.3-70b-versatile",
         messages=messages,
         max_tokens=600  # ✅ Keeps response short and effective
     )
@@ -163,7 +169,7 @@ def ask_sustainability_ai(user_question):
     ]
 
     response = client.chat.completions.create(
-        model="llama-3.2-90b-vision-preview",
+        model="llama-3.3-70b-versatile",
         messages=messages,
         max_tokens=150  # ✅ Ensures a brief response
     )

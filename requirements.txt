@@ -5,3 +5,7 @@ openrouteservice
 requests
 groq
 beautifulsoup4
+transformers==4.44.0
+torch
+torchvision
+torchaudio

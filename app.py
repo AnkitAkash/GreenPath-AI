@@ -2,6 +2,10 @@ import streamlit as st
 import os
 from dotenv import load_dotenv
 
+# Disable TensorFlow to avoid conflicts with transformers
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['USE_TF'] = '0'
+
 load_dotenv()  # Loads variables from .env into system environment
 
 # Set up the page
