@@ -1,0 +1,7 @@
+python-dotenv
+streamlit
+Pillow
+openrouteservice
+requests
+groq
+beautifulsoup4
