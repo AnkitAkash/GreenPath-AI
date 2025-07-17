@@ -4,9 +4,9 @@ import os
 load_dotenv()
 
 required_keys = [
-    "OPENSTREETMAP_API_KEY",
-    "OPENAI_API_KEY",
-    "SECRET_SALT"
+    "GROQ_API_KEY",
+    "ORS_API_KEY",
+    "NEWS_API_KEY"
 ]
 
 for key in required_keys:
